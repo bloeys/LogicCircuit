@@ -1,0 +1,12 @@
+ToDo list:
+
+Binding errors in the runing tree
+
+smarter wires
+
+Keyboard device
+Display device
+"hard drive" device
+
+Colors of symbols
+Collapsable/expandable categories
