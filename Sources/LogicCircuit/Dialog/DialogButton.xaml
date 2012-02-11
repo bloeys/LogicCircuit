@@ -1,0 +1,50 @@
+﻿<Window x:Class="LogicCircuit.DialogButton"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:lc="clr-namespace:LogicCircuit"
+	WindowStartupLocation="CenterOwner"
+	Title="{Binding Source={x:Static lc:Resources.NameButton}, Mode=OneTime}"
+	Style="{DynamicResource DialogWindow}"
+	FocusManager.FocusedElement="{Binding ElementName=name}"
+>
+	<Window.Resources>
+		<Style TargetType="{x:Type TextBox}">
+			<Setter Property="Margin" Value="7,3,8,3"/>
+		</Style>
+
+		<Style TargetType="{x:Type Label}">
+			<Setter Property="Margin" Value="3"/>
+			<Setter Property="HorizontalContentAlignment" Value="Right"/>
+		</Style>
+	</Window.Resources>
+
+	<Grid Margin="3">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+		<Label Grid.Row="0" Grid.Column="0" Content="{Binding Source={x:Static lc:Resources.TitleNotation}, Mode=OneTime}" Target="{Binding ElementName=name}"/>
+		<TextBox Grid.Row="0" Grid.Column="1" Name="name" ToolTip="{x:Static lc:Resources.ToolTipButtonNotation}"/>
+
+		<CheckBox Grid.Row="1" Grid.Column="1" Name="isToggle"
+			Content="{x:Static lc:Resources.TitleIsToggle}" ToolTip="{x:Static lc:Resources.ToolTipIsToggle}"
+		/>
+
+		<Label Grid.Row="2" Grid.Column="0" Content="{Binding Source={x:Static lc:Resources.TitleDescription}, Mode=OneTime}" Target="{Binding ElementName=note}"/>
+		<TextBox Grid.Row="2" Grid.Column="1" Name="note" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+			AcceptsReturn="True" SpellCheck.IsEnabled="True"
+		/>
+
+		<StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+			<Button Content="{Binding Source={x:Static lc:Resources.TitleOK}, Mode=OneTime}" IsDefault="True" Click="ButtonOkClick"/>
+			<Button Content="{Binding Source={x:Static lc:Resources.TitleCancel}, Mode=OneTime}" IsCancel="True"/>
+		</StackPanel>
+	</Grid>
+</Window>
