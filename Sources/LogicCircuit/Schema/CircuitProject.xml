@@ -14,7 +14,7 @@
 
 		Version 2.0.0.1 - Moving to new store. Adding Frequency and IsMaximumSpeed to project. Adding JamNotation to Pin. Adding TextNote.
 		Version 2.0.0.2 - Adding Note to memory modules, collapse state to categories.
-		Version 2.0.0.3 - Adding note field to button and constant
+		Version 2.0.0.3 - Adding note field to button and constant. Adding LedMatrix circuits.
 	-->
 
 	<Table Name="Project">
@@ -206,6 +206,24 @@
 		<Table.Keys>
 			<Key Name="PK_Memory" KeyType="Subclass" ParentName="Circuit" Action="Cascade">
 				<Column Name="MemoryId"/>
+			</Key>
+		</Table.Keys>
+	</Table>
+
+	<Table Name="LedMatrix">
+		<Table.Columns>
+			<Column Name="LedMatrixId" Type="Guid" ReadOnly="true"/>
+			<Column Name="MatrixType" Type="LedMatrixType" Default="LedMatrixType.Individual"/>
+			<Column Name="CellShape" Type="LedMatrixCellShape" Default="LedMatrixCellShape.Round"/>
+			<Column Name="Rows" Type="int" Check="LedMatrix.Check"/>
+			<Column Name="Columns" Type="int" Check="LedMatrix.Check"/>
+			<Column Name="Colors" Type="int" Check="LedMatrix.CheckColors" Default="1"/>
+			<Column Name="Note" Type="string" Default=""/>
+		</Table.Columns>
+
+		<Table.Keys>
+			<Key Name="PK_LedMatrix" KeyType="Subclass" ParentName="Circuit" Action="Cascade">
+				<Column Name="LedMatrixId"/>
 			</Key>
 		</Table.Keys>
 	</Table>
