@@ -89,6 +89,7 @@ namespace LogicCircuit {
 			loaders.Add(nameTable.Add(this.ConstantSet         .Table.Name), (IRecordLoader) this.ConstantSet         );
 			loaders.Add(nameTable.Add(this.CircuitButtonSet    .Table.Name), (IRecordLoader) this.CircuitButtonSet    );
 			loaders.Add(nameTable.Add(this.MemorySet           .Table.Name), (IRecordLoader) this.MemorySet           );
+			loaders.Add(nameTable.Add(this.LedMatrixSet        .Table.Name), (IRecordLoader) this.LedMatrixSet        );
 			loaders.Add(nameTable.Add(this.SplitterSet         .Table.Name), (IRecordLoader) this.SplitterSet         );
 			loaders.Add(nameTable.Add(this.CircuitSymbolSet    .Table.Name), (IRecordLoader) this.CircuitSymbolSet    );
 			loaders.Add(nameTable.Add(this.WireSet             .Table.Name), (IRecordLoader) this.WireSet             );
@@ -129,6 +130,7 @@ namespace LogicCircuit {
 			this.DistinctSymbol(this.CircuitButtonSet);
 			this.DistinctSymbol(this.ConstantSet);
 			this.DistinctSymbol(this.MemorySet);
+			this.DistinctSymbol(this.LedMatrixSet);
 			this.DistinctSymbol(this.PinSet);
 			this.DistinctSymbol(this.SplitterSet);
 
@@ -151,6 +153,7 @@ namespace LogicCircuit {
 		public string WriteToString(IEnumerable<Symbol> symbol) {
 			StringBuilder sb = new StringBuilder();
 			using (TextWriter textWriter = new StringWriter(sb, CultureInfo.InvariantCulture)) {
+			LedMatrixData.Save(this.LedMatrixSet.Table, root);
 				CircuitProject copy = new CircuitProject();
 				bool started = copy.StartTransaction();
 				Tracer.Assert(started);
@@ -252,6 +255,9 @@ namespace LogicCircuit {
 				} else if(circuit is Memory) {
 					Tracer.Assert(this.MemorySet.Table.Exists(MemoryData.MemoryIdField.Field, circuit.CircuitId));
 					Tracer.Assert(this.CircuitSymbolSet.SelectByCircuit(circuit).Count() == 1);
+				} else if(circuit is LedMatrix) {
+					Tracer.Assert(this.LedMatrixSet.Table.Exists(LedMatrixData.LedMatrixIdField.Field, circuit.CircuitId));
+					Tracer.Assert(this.CircuitSymbolSet.SelectByCircuit(circuit).Count() == 1);
 				} else if(circuit is Pin) {
 					Tracer.Assert(this.PinSet.Table.Exists(PinData.PinIdField.Field, circuit.CircuitId));
 					Tracer.Assert(this.CircuitSymbolSet.SelectByCircuit(circuit).Count() == 1);
@@ -260,6 +266,14 @@ namespace LogicCircuit {
 				} else if(circuit is Splitter) {
 					Tracer.Assert(this.SplitterSet.Table.Exists(SplitterData.SplitterIdField.Field, circuit.CircuitId));
 					Tracer.Assert(this.CircuitSymbolSet.SelectByCircuit(circuit).Count() == 1);
+				}
+			}
+			foreach(LedMatrix ledMatrix in this.LedMatrixSet) {
+				int count = this.DevicePinSet.SelectByCircuit(ledMatrix).Count();
+				if(ledMatrix.MatrixType == LedMatrixType.Individual) {
+					Tracer.Assert(ledMatrix.Rows == count);
+				} else {
+					Tracer.Assert((ledMatrix.Rows + ledMatrix.Columns) == count);
 				}
 			}
 			foreach(Wire wire in this.WireSet) {

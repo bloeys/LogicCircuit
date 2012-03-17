@@ -1882,5 +1882,124 @@ namespace LogicCircuit {
  		public static string GridPoint(int x, int y) {
 			return string.Format(Culture, ResourceManager.GetString("GridPoint", Culture), x, y);
 		}
+
+		/// <summary>
+		/// Looks up a localized string similar to LED Matrix.
+		/// </summary>
+ 		public static string NameLedMatrix {
+			get { return ResourceManager.GetString("NameLedMatrix", Culture); }
+		}
+
+		/// <summary>
+		/// Looks up a localized string similar to LED Matrix {0}x{1} with {2} bit(s) per LED ({3} colors).
+		/// </summary>
+ 		public static string ToolTipLedMatrix(int rows, int columns, int bitsPerLed, int colors) {
+			return string.Format(Culture, ResourceManager.GetString("ToolTipLedMatrix", Culture), rows, columns, bitsPerLed, colors);
+		}
+
+		/// <summary>
+		/// Looks up a localized string similar to Columns.
+		/// </summary>
+ 		public static string CaptionColumns {
+			get { return ResourceManager.GetString("CaptionColumns", Culture); }
+		}
+
+		/// <summary>
+		/// Looks up a localized string similar to Rows.
+		/// </summary>
+ 		public static string CaptionRows {
+			get { return ResourceManager.GetString("CaptionRows", Culture); }
+		}
+
+		/// <summary>
+		/// Looks up a localized string similar to Choose number of columns of the LED matrix.
+		/// </summary>
+ 		public static string ToolTipColumns {
+			get { return ResourceManager.GetString("ToolTipColumns", Culture); }
+		}
+
+		/// <summary>
+		/// Looks up a localized string similar to Choose number of rows of the LED matrix.
+		/// </summary>
+ 		public static string ToolTipRows {
+			get { return ResourceManager.GetString("ToolTipRows", Culture); }
+		}
+
+		/// <summary>
+		/// Looks up a localized string similar to Type.
+		/// </summary>
+ 		public static string CaptionLedMatrixType {
+			get { return ResourceManager.GetString("CaptionLedMatrixType", Culture); }
+		}
+
+		/// <summary>
+		/// Looks up a localized string similar to for selecting Column #{0}.
+		/// </summary>
+ 		public static string LedMatrixColumnSelector(int column) {
+			return string.Format(Culture, ResourceManager.GetString("LedMatrixColumnSelector", Culture), column);
+		}
+
+		/// <summary>
+		/// Looks up a localized string similar to for each LED in Row #{0}.
+		/// </summary>
+ 		public static string LedMatrixRowIndividual(int row) {
+			return string.Format(Culture, ResourceManager.GetString("LedMatrixRowIndividual", Culture), row);
+		}
+
+		/// <summary>
+		/// Looks up a localized string similar to for selecting Row #{0}.
+		/// </summary>
+ 		public static string LedMatrixRowSelector(int row) {
+			return string.Format(Culture, ResourceManager.GetString("LedMatrixRowSelector", Culture), row);
+		}
+
+		/// <summary>
+		/// Looks up a localized string similar to Individual.
+		/// </summary>
+ 		public static string LedMatrixTypeIndividual {
+			get { return ResourceManager.GetString("LedMatrixTypeIndividual", Culture); }
+		}
+
+		/// <summary>
+		/// Looks up a localized string similar to Selector.
+		/// </summary>
+ 		public static string LedMatrixTypeSelector {
+			get { return ResourceManager.GetString("LedMatrixTypeSelector", Culture); }
+		}
+
+		/// <summary>
+		/// Looks up a localized string similar to Cell _Shape:.
+		/// </summary>
+ 		public static string TitleCellShape {
+			get { return ResourceManager.GetString("TitleCellShape", Culture); }
+		}
+
+		/// <summary>
+		/// Looks up a localized string similar to _Columns:.
+		/// </summary>
+ 		public static string TitleColumns {
+			get { return ResourceManager.GetString("TitleColumns", Culture); }
+		}
+
+		/// <summary>
+		/// Looks up a localized string similar to _Rows:.
+		/// </summary>
+ 		public static string TitleRows {
+			get { return ResourceManager.GetString("TitleRows", Culture); }
+		}
+
+		/// <summary>
+		/// Looks up a localized string similar to Choose the way of controlling the matrix.
+		/// </summary>
+ 		public static string ToolTipLedMatrixType {
+			get { return ResourceManager.GetString("ToolTipLedMatrixType", Culture); }
+		}
+
+		/// <summary>
+		/// Looks up a localized string similar to C_olors:.
+		/// </summary>
+ 		public static string TitleColors {
+			get { return ResourceManager.GetString("TitleColors", Culture); }
+		}
 	}
 }
