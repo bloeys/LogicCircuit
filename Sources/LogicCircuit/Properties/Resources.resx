@@ -591,7 +591,7 @@ Out</value>
     <value>Power On</value>
   </data>
   <data name="ProbeHistoryHex" xml:space="preserve">
-    <value>0x{0:X}</value>
+    <value>{0:X}</value>
     <comment>{int value}</comment>
   </data>
   <data name="ProbeHistoryMark" xml:space="preserve">
@@ -1051,5 +1051,11 @@ Do you want to remove the reference to it from the Recent Files list?</value>
   <data name="DefaultGateShape" xml:space="preserve">
     <value>Shaped</value>
     <comment>!(Rectangular, Shaped) - chose default gate shape for your culture.</comment>
+  </data>
+  <data name="CommandTruthTable" xml:space="preserve">
+    <value>Truth Table</value>
+  </data>
+  <data name="MessageInputOutputPinsMissing" xml:space="preserve">
+    <value>There is no Input or Output Pins on this circuit. The truth tables are built by sending all the permutations of data to Input Pins and reading the results from Output Pins.</value>
   </data>
 </root>

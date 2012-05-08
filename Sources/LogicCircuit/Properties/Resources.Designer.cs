@@ -1077,7 +1077,7 @@ namespace LogicCircuit {
 		}
 
 		/// <summary>
-		/// Looks up a localized string similar to 0x{0:X}.
+		/// Looks up a localized string similar to {0:X}.
 		/// </summary>
  		public static string ProbeHistoryHex(int value) {
 			return string.Format(Culture, ResourceManager.GetString("ProbeHistoryHex", Culture), value);
@@ -2105,6 +2105,20 @@ namespace LogicCircuit {
 		/// </summary>
  		public static string DefaultGateShape {
 			get { return ResourceManager.GetString("DefaultGateShape", Culture); }
+		}
+
+		/// <summary>
+		/// Looks up a localized string similar to Truth Table.
+		/// </summary>
+ 		public static string CommandTruthTable {
+			get { return ResourceManager.GetString("CommandTruthTable", Culture); }
+		}
+
+		/// <summary>
+		/// Looks up a localized string similar to There is no Input or Output Pins on this circuit. The truth tables are built by sending all the permutations of data to Input Pins and reading the results from Output Pins..
+		/// </summary>
+ 		public static string MessageInputOutputPinsMissing {
+			get { return ResourceManager.GetString("MessageInputOutputPinsMissing", Culture); }
 		}
 	}
 }

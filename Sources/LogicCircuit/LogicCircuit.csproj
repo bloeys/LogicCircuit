@@ -29,6 +29,7 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -63,6 +64,7 @@
     <Compile Include="CircuitProject\Wrappers\CollapsedCategory.cs" />
     <Compile Include="CircuitProject\Wrappers\LedMatrix.cs" />
     <Compile Include="CircuitProject\Wrappers\TextNote.cs" />
+    <Compile Include="CircuitTestSocket.cs" />
     <Compile Include="ColorMethods.cs" />
     <Compile Include="Conductor.cs" />
     <Compile Include="ConductorMap.cs" />
@@ -120,6 +122,9 @@
     </Compile>
     <Compile Include="Dialog\DialogText.xaml.cs">
       <DependentUpon>DialogText.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\DialogTruthTable.xaml.cs">
+      <DependentUpon>DialogTruthTable.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialog\DialogUsage.xaml.cs">
       <DependentUpon>DialogUsage.xaml</DependentUpon>
@@ -244,6 +249,7 @@
     <Compile Include="Function\FunctionTriStateGroup.cs" />
     <Compile Include="Function\FunctionXor.cs" />
     <Compile Include="Function\FunctionXorNot.cs" />
+    <Compile Include="Function\TriNumber.cs" />
     <Compile Include="GateShape.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="GridLengthAnimation.cs" />
@@ -360,6 +366,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialog\DialogText.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\DialogTruthTable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
