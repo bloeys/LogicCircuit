@@ -1,0 +1,12 @@
+﻿<FlowDocumentScrollViewer
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	VerticalScrollBarVisibility="Auto"
+	HorizontalScrollBarVisibility="Auto"
+	Zoom="1"
+	Focusable="False"
+	Cursor="Arrow"
+	IsSelectionEnabled="False"
+	IsTabStop="False"
+	IsToolBarVisible="False"
+/>
