@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -63,6 +64,7 @@
     <Compile Include="CircuitProject\Wrappers\CollapsedCategory.cs" />
     <Compile Include="CircuitProject\Wrappers\LedMatrix.cs" />
     <Compile Include="CircuitProject\Wrappers\TextNote.cs" />
+    <Compile Include="CircuitTestSocket.cs" />
     <Compile Include="ColorMethods.cs" />
     <Compile Include="Conductor.cs" />
     <Compile Include="ConductorMap.cs" />
@@ -120,6 +122,9 @@
     </Compile>
     <Compile Include="Dialog\DialogText.xaml.cs">
       <DependentUpon>DialogText.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\DialogTruthTable.xaml.cs">
+      <DependentUpon>DialogTruthTable.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialog\DialogUsage.xaml.cs">
       <DependentUpon>DialogUsage.xaml</DependentUpon>
@@ -214,6 +219,7 @@
     <Compile Include="Editor\WireMarker.cs" />
     <Compile Include="Editor\WirePledge.cs" />
     <Compile Include="Editor\WirePointMarker.cs" />
+    <Compile Include="ExpressionParser.cs" />
     <Compile Include="Function\FunctionAnd.cs" />
     <Compile Include="Function\FunctionAndNot.cs" />
     <Compile Include="Function\CircuitState.cs" />
@@ -247,6 +253,7 @@
     <Compile Include="GridLengthAnimation.cs" />
     <Compile Include="GridPoint.cs" />
     <Compile Include="HyperlinkNavigationCommand.cs" />
+    <Compile Include="InverseBooleanConverter.cs" />
     <Compile Include="LambdaUICommand.cs" />
     <Compile Include="Mainframe.Commands.cs" />
     <Compile Include="Mainframe.File.cs" />
@@ -358,6 +365,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialog\DialogText.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialog\DialogTruthTable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

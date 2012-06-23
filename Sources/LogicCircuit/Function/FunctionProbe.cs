@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Windows.Controls;
 
 namespace LogicCircuit {
@@ -83,7 +84,17 @@ namespace LogicCircuit {
 		}
 
 		public void Redraw() {
-			((TextBlock)this.CircuitSymbol.ProbeView).Text = this.ToHex();
+			((TextBlock)this.CircuitSymbol.ProbeView).Text = this.ToInt32().ToString("X", CultureInfo.InvariantCulture);
+		}
+
+		public int ToInt32() {
+			int number = 0;
+			for(int i = 0; i < this.BitWidth; i++) {
+				if(this[i] == State.On1) {
+					number |= (1 << i);
+				}
+			}
+			return number;
 		}
 
 		private class History<T> {
