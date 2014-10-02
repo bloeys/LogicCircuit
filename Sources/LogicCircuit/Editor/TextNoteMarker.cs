@@ -1,63 +1,76 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Shapes;
 
 namespace LogicCircuit {
 	partial class EditorDiagram {
-		private class TextNoteMarker : Marker {
+		private sealed class TextNoteMarker : Marker, ISizableMarker {
+			public TextNote TextNote { get { return (TextNote)this.Symbol; } }
 
-			private static readonly Action<TextNoteMarker, Point>[] move = new Action<TextNoteMarker, Point>[] {
-				(marker, point) => { marker.x = point.X - marker.textNoteRect.X; marker.y = point.Y - marker.textNoteRect.Y; },
-				(marker, point) => { marker.y = point.Y - marker.textNoteRect.Y; },
-				(marker, point) => { marker.w = point.X - marker.textNoteRect.Right; marker.y = point.Y - marker.textNoteRect.Y; },
+			private readonly Canvas markerGlyph;
+			public override FrameworkElement Glyph { get { return this.markerGlyph; } }
 
-				(marker, point) => { marker.x = point.X - marker.textNoteRect.X; },
-				null,
-				(marker, point) => { marker.w = point.X - marker.textNoteRect.Right; },
+			private Rect symbolRect;
+			private readonly Rectangle rectangle;
+			private readonly ResizeMarker<TextNoteMarker>[] resizeMarker;
 
-				(marker, point) => { marker.x = point.X - marker.textNoteRect.X; marker.h = point.Y - marker.textNoteRect.Bottom; },
-				(marker, point) => { marker.h = point.Y - marker.textNoteRect.Bottom; },
-				(marker, point) => { marker.w = point.X - marker.textNoteRect.Right; marker.h = point.Y - marker.textNoteRect.Bottom; }
-			};
+			public Size Size { get { return new Size(this.rectangle.Width, this.rectangle.Height); } }
 
-			public TextNote TextNote { get; private set; }
-			public override Symbol Symbol { get { return this.TextNote; } }
-			private Rect textNoteRect;
-
-			public Canvas MarkerGlyph { get; private set; }
-			public override FrameworkElement Glyph { get { return this.MarkerGlyph; } }
-
-			private readonly Rectangle rectangle = Symbol.Skin<Rectangle>(SymbolShape.MarkerRectangle);
-
-			private double x = 0;
-			private double y = 0;
-			private double w = 0;
-			private double h = 0;
-
-			private readonly ResizeMarker[] resizeMarker;
-
-			public TextNoteMarker(TextNote textNote) {
-				this.TextNote = textNote;
-				this.MarkerGlyph = new Canvas();
-				this.MarkerGlyph.DataContext = this;
-				this.MarkerGlyph.ToolTip = Properties.Resources.TextNotation;
+			public TextNoteMarker(TextNote textNote) : base(textNote) {
+				this.rectangle = Symbol.Skin<Rectangle>(SymbolShape.MarkerRectangle);
+				this.markerGlyph = new Canvas();
+				this.markerGlyph.DataContext = this;
+				this.markerGlyph.ToolTip = Properties.Resources.TextNotation;
 				Panel.SetZIndex(this.rectangle, 0);
-				this.MarkerGlyph.Children.Add(this.rectangle);
-				this.resizeMarker = new ResizeMarker[] {
-					new ResizeMarker(this, 0, 0), new ResizeMarker(this, 1, 0), new ResizeMarker(this, 2, 0),
-					new ResizeMarker(this, 0, 1), new ResizeMarker(this, 2, 1),
-					new ResizeMarker(this, 0, 2), new ResizeMarker(this, 1, 2), new ResizeMarker(this, 2, 2)
+				this.markerGlyph.Children.Add(this.rectangle);
+				this.resizeMarker = new ResizeMarker<TextNoteMarker>[] {
+					new ResizeMarker<TextNoteMarker>(this, 0, 0), new ResizeMarker<TextNoteMarker>(this, 1, 0), new ResizeMarker<TextNoteMarker>(this, 2, 0),
+					new ResizeMarker<TextNoteMarker>(this, 0, 1), new ResizeMarker<TextNoteMarker>(this, 2, 1),
+					new ResizeMarker<TextNoteMarker>(this, 0, 2), new ResizeMarker<TextNoteMarker>(this, 1, 2), new ResizeMarker<TextNoteMarker>(this, 2, 2)
 				};
-				foreach(ResizeMarker marker in this.resizeMarker) {
-					this.MarkerGlyph.Children.Add(marker.Glyph);
+				foreach(ResizeMarker<TextNoteMarker> marker in this.resizeMarker) {
+					this.markerGlyph.Children.Add(marker.Glyph);
 				}
-				this.SnapToTextNote();
-				this.PositionGlyph();
+
+				this.Refresh();
 			}
 
-			private void SnapToTextNote() {
+			public void Resize(double x1, double y1, double x2, double y2) {
+				Point p1 = this.symbolRect.TopLeft;
+				Point p2 = this.symbolRect.BottomRight;
+				if(!double.IsNaN(x1)) {
+					p1.X = x1;
+				}
+				if(!double.IsNaN(y1)) {
+					p1.Y = y1;
+				}
+				if(!double.IsNaN(x2)) {
+					p2.X = x2;
+				}
+				if(!double.IsNaN(y2)) {
+					p2.Y = y2;
+				}
+				this.PositionGlyph(new Rect(p1, p2));
+			}
+
+			public void CommitResize(EditorDiagram editor, bool withWires) {
+				editor.CommitMove(this);
+			}
+
+			public Rect ResizedRect() {
+				Rect rect = new Rect(Canvas.GetLeft(this.Glyph), Canvas.GetTop(this.Glyph), this.rectangle.Width, this.rectangle.Height);
+				if(this.TextNote.Rotation != Rotation.Up) {
+					int x = Symbol.GridPoint(rect.X);
+					int y = Symbol.GridPoint(rect.Y);
+					int w = Math.Max(Symbol.GridPoint(rect.Width), 1);
+					int h = Math.Max(Symbol.GridPoint(rect.Height), 1);
+					rect = Symbol.Transform(rect, Symbol.RotationTransform(-Symbol.Angle(this.TextNote.Rotation), x, y, w, h));
+				}
+				return rect;
+			}
+
+			public override void Refresh() {
 				Rect rect = new Rect(
 					Symbol.ScreenPoint(this.TextNote.X),
 					Symbol.ScreenPoint(this.TextNote.Y),
@@ -67,127 +80,17 @@ namespace LogicCircuit {
 				if(this.TextNote.Rotation != Rotation.Up) {
 					rect = Symbol.Transform(rect, Symbol.RotationTransform(this.TextNote.Rotation, this.TextNote.X, this.TextNote.Y, this.TextNote.Width, this.TextNote.Height));
 				}
-				this.textNoteRect = rect;
+				this.symbolRect = rect;
+				this.PositionGlyph(rect);
 			}
 
-			public Rect ResizedRect() {
-				this.x = 0;
-				this.y = 0;
-				this.w = 0;
-				this.h = 0;
-
-				Rect rect = new Rect(Canvas.GetLeft(this.MarkerGlyph), Canvas.GetTop(this.MarkerGlyph), this.rectangle.Width, this.rectangle.Height);
-				if(this.TextNote.Rotation != Rotation.Up) {
-					rect = Symbol.Transform(rect, Symbol.RotationTransform(-Symbol.Angle(this.TextNote.Rotation), this.TextNote.X, this.TextNote.Y, this.TextNote.Width, this.TextNote.Height));
-				}
-				return rect;
-			}
-
-			public override void Move(EditorDiagram editor, Point point) {
-				editor.MoveSelection(point);
-			}
-
-			public override void Commit(EditorDiagram editor, Point point, bool withWires) {
-				editor.CommitMove(point, withWires);
-				this.SnapToTextNote();
-			}
-
-			public override void Shift(int dx, int dy) {
-				this.TextNote.Shift(dx, dy);
-				this.SnapToTextNote();
-				this.PositionTextNoteGliph();
-
-			}
-
-			private void PositionTextNoteGliph() {
-				this.TextNote.PositionGlyph();
-				this.PositionGlyph();
-			}
-
-			public void PositionGlyph() {
-				double sx = this.textNoteRect.X + this.x;
-				double sy = this.textNoteRect.Y + this.y;
-				double sw = this.textNoteRect.Width - this.x + this.w;
-				double sh = this.textNoteRect.Height - this.y + this.h;
-				Rect rect = new Rect(new Point(sx, sy), new Point(sx + sw, sy + sh));
-
-				Canvas.SetLeft(this.MarkerGlyph, rect.X);
-				Canvas.SetTop(this.MarkerGlyph, rect.Y);
+			private void PositionGlyph(Rect rect) {
+				Canvas.SetLeft(this.Glyph, rect.X);
+				Canvas.SetTop(this.Glyph, rect.Y);
 				this.rectangle.Width = rect.Width;
 				this.rectangle.Height = rect.Height;
-
-				foreach(ResizeMarker marker in this.resizeMarker) {
-					marker.PositionGlyph();
-				}
-			}
-
-			public void Refresh() {
-				this.x = 0;
-				this.y = 0;
-				this.w = 0;
-				this.h = 0;
-
-				this.SnapToTextNote();
-				this.PositionGlyph();
-			}
-
-			private class ResizeMarker : Marker {
-				private static readonly Cursor[]  cursors = new Cursor[] {
-					Cursors.SizeNWSE, Cursors.SizeNS, Cursors.SizeNESW,
-					Cursors.SizeWE, null, Cursors.SizeWE,
-					Cursors.SizeNESW, Cursors.SizeNS, Cursors.SizeNWSE
-				};
-
-				private readonly TextNoteMarker parent;
-				public override Symbol Symbol { get { return this.parent.Symbol; } }
-
-				private readonly Rectangle rectangle = Symbol.Skin<Rectangle>(SymbolShape.MarkerRectangle);
-				public override FrameworkElement Glyph { get { return this.rectangle; } }
-
-				private readonly int x;
-				private readonly int y;
-
-				/// <summary>
-				/// Creates marker
-				/// </summary>
-				/// <param name="parent"></param>
-				/// <param name="x">0 - leftmost position on the parent. 1 - center of the edge. 2 - rightmost position</param>
-				/// <param name="y">0 - topmost position on the parent. 1 - center of the edge. 2 - bottommost position</param>
-				public ResizeMarker(TextNoteMarker parent, int x, int y) {
-					this.parent = parent;
-					this.x = x;
-					this.y = y;
-					this.rectangle.DataContext = this;
-					Panel.SetZIndex(this.rectangle, 1);
-					this.rectangle.Width = this.rectangle.Height = 2 * Symbol.PinRadius;
-					this.rectangle.Cursor = ResizeMarker.cursors[this.x + this.y * 3];
-					Tracer.Assert(this.rectangle.Cursor != null);
-				}
-
-				public void PositionGlyph() {
-					Canvas.SetLeft(this.rectangle, this.parent.rectangle.Width * this.x / 2 - Symbol.PinRadius);
-					Canvas.SetTop(this.rectangle, this.parent.rectangle.Height * this.y / 2 - Symbol.PinRadius);
-				}
-
-				public override void Move(EditorDiagram editor, Point point) {
-					if(editor.SelectionCount > 1) {
-						editor.MoveSelection(point);
-					} else {
-						TextNoteMarker.move[this.x + this.y * 3](this.parent, point);
-						this.parent.PositionGlyph();
-					}
-				}
-
-				public override void Commit(EditorDiagram editor, Point point, bool withWires) {
-					if(editor.SelectionCount > 1) {
-						editor.CommitMove(point, withWires);
-					} else {
-						editor.CommitMove(this.parent);
-					}
-				}
-
-				public override void Shift(int dx, int dy) {
-					throw new InvalidOperationException();
+				foreach(ResizeMarker<TextNoteMarker> marker in this.resizeMarker) {
+					marker.Refresh();
 				}
 			}
 		}

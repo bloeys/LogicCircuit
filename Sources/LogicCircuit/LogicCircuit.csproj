@@ -171,6 +171,7 @@
     <Compile Include="DisplayCanvas.cs" />
     <Compile Include="DoubleAdderConverter.cs" />
     <Compile Include="Editor\AreaMarker.cs" />
+    <Compile Include="Editor\ButtonMarker.cs" />
     <Compile Include="Editor\CircuitDescriptor.cs" />
     <Compile Include="Editor\CircuitDescriptorComparer.cs" />
     <Compile Include="Editor\CircuitDescriptorList.cs" />
@@ -243,6 +244,7 @@
       <DependentUpon>DialogMessage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Editor\Marker.cs" />
+    <Compile Include="Editor\ResizeMarker.cs" />
     <Compile Include="Editor\Switcher.cs" />
     <Compile Include="Editor\TextNoteMarker.cs" />
     <Compile Include="Editor\WireDisplayControl.xaml.cs">
