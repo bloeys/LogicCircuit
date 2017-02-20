@@ -141,6 +141,7 @@
             <MenuItem Header="{x:Static properties:Resources.MenuHeaderTools}">
 				<lc:CommandMenuItem Command="{Binding Path=Editor.CommandReport}"/>
 				<lc:CommandMenuItem Command="{Binding Path=Editor.CommandOscilloscope}"/>
+				<lc:CommandMenuItem Command="{Binding Path=CommandIronPython}"/>
 				<lc:CommandMenuItem Command="{Binding Path=CommandOptions}"/>
 			</MenuItem>
 			<MenuItem Header="{x:Static properties:Resources.MenuHeaderHelp}">
