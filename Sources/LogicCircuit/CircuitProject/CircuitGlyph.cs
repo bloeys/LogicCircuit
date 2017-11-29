@@ -176,10 +176,11 @@ namespace LogicCircuit {
 					Tracer.Assert(notationPosition != null); // If pin has notation then it should belong to rectangular rendering circuit.
 					TextBlock text = new TextBlock();
 					text.Foreground = Brushes.Black;
-					int len = (jam.Pin.PinSide == PinSide.Top || jam.Pin.PinSide == PinSide.Bottom) ? 4 : 2;
+                    //int len = (jam.Pin.PinSide == PinSide.Top || jam.Pin.PinSide == PinSide.Bottom) ? 4 : 2;
+                    int len = 4;
 					text.Text = jamNotation.Substring(0, Math.Min(len, jamNotation.Length));
 					text.ToolTip = jam.Pin.ToolTip;
-					text.FontSize = 8;
+					text.FontSize = 9;
 					Panel.SetZIndex(text, 1);
 					notationPosition(jam, text);
 					canvas.Children.Add(text);
